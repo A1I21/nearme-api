@@ -1,8 +1,10 @@
 import { server } from "./server";
+const port = process.env.PORT || process.env.$port || 3000;
 
 
-server.listen({ port: 300 }).catch((err) => {
-	server.log.error(err);
-	process.exit(1);
-});
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+}
+);
+// }
 

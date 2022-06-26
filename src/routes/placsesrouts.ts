@@ -1,8 +1,12 @@
 import { Static, Type } from "@sinclair/typebox";
 import { FastifyInstance } from "fastify";
+const request = require('request');
 
 import { placsesCON } from "../controller/placsesCON";
-const querystring = require('querystring')
+import { plapla } from "../services/api";
+//import { getPlaces, placesearch } from "../services/placesreach";
+import querystring from "querystring";
+import { type } from "os";
 
 export const GetPlaceQuerybyanme = Type.Object({
   name: Type.Optional(Type.String()),
@@ -13,6 +17,12 @@ export const GetPlaceQuerybycc = Type.Object({
   name: Type.Optional(Type.String()),
   city: Type.Optional(Type.String()),
 });
+export const myq = Type.Object({
+  name: Type.Optional(Type.String()),
+});
+type myq = Static<typeof myq>;
+
+
 type GetPlaceQuerybycc = Static<typeof GetPlaceQuerybycc>;
 
 const places = Type.Object({
@@ -27,7 +37,7 @@ const places = Type.Object({
 type places = Static<typeof places>;
 //restrunt array of places
 export let place: places[] = [
-    {
+  {
     placeid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     name: "MAcDonalds",
     address: "Riyadh",
@@ -44,17 +54,17 @@ export let place: places[] = [
     catagory: ["burger", "fastfood"],
     description: "Amiercan restaurant",
     rating: 4,
-    },
-    {
-        placeid: "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-        name: "KFC",
-        address: "Riyadh",
-        city: "Riyadh",
-        catagory: ["burger", "fastfood"],
-        description: "Amiercan restaurant",
-        rating: 4,
-        },
-    {
+  },
+  {
+    placeid: "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    name: "KFC",
+    address: "Riyadh",
+    city: "Riyadh",
+    catagory: ["burger", "fastfood"],
+    description: "Amiercan restaurant",
+    rating: 4,
+  },
+  {
     placeid: "3fa85f64-5717-4562-b3fc-2c963f66afa8",
     name: "Domino's",
     address: "Riyadh",
@@ -62,9 +72,8 @@ export let place: places[] = [
     catagory: ["pizza"],
     description: "Amiercan restaurant",
     rating: 4,
-    
   },
-    {
+  {
     placeid: "3fa85f64-5717-4562-b3fc-2c963f66afa9",
     name: "Pizza Hut",
     address: "Riyadh",
@@ -72,10 +81,7 @@ export let place: places[] = [
     catagory: ["pizza"],
     description: "Amiercan restaurant",
     rating: 4,
-    },
-
-
-   
+  },
 ];
 
 export default async function (server: FastifyInstance) {
@@ -112,13 +118,16 @@ export default async function (server: FastifyInstance) {
     schema: {
       summary: "search all places by name",
       tags: ["place"],
-      querystring: GetPlaceQuerybyanme,
+      // querystring: GetPlaceQuerybyanme,
     },
+
     handler: async (request, reply) => {
-      const Nqurey: any = request.query as GetPlaceQuerybyanme;
-      if (Nqurey.name) {
-        return place.filter((p) => p.name.includes(Nqurey.name ?? ""));
-      }
+     
+    
+      // const Nqurey: any = request.query as GetPlaceQuerybyanme;
+      // if (Nqurey.name) {
+      //   return place.filter((p) => p.name.includes(Nqurey.name ?? ""));
+      // }
     },
   });
   //serach place by catagory and city
@@ -131,15 +140,36 @@ export default async function (server: FastifyInstance) {
       querystring: GetPlaceQuerybycc,
     },
     handler: async (request, reply) => {
-       
       const qurey: any = request.query as GetPlaceQuerybycc;
       if (qurey.name || qurey.city) {
-          qurey.name.toLowerCase();
-            qurey.city.toLowerCase();
+        let samllname = qurey.name.toLowerCase();
+        let smallc = qurey.city.toLowerCase();
         return place
-          .filter((p) => p.name.toLowerCase().includes(qurey.name ?? "") )  
-            .filter((p) => p.city.toLowerCase().includes(qurey.city ?? ""));         
+          .filter((p) => p.name.toLowerCase().includes(samllname ?? ""))
+          .filter((p) => p.city.toLowerCase().includes(smallc ?? ""));
       }
     },
   });
+  //route to run a function 
+  server.route({
+    method: "GET",
+    url: "/placeserachbyapppli",
+    schema: {
+      summary: "search by canagory and city",
+      tags: ["place"],
+      querystring: myq,
+    },
+    handler: async (request, reply) => {
+      const qurey: any = request.query as myq;
+      return plapla(qurey.name);
+
 }
+  });
+}
+
+
+
+
+
+
+

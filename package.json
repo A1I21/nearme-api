@@ -4,13 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon src/index.ts | pino-colada",
+		"dev": "nodemon -r dotenv/config src/index.ts | pino-colada",
 		"start": "tsc && node dist/index.js"
 	},
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"@types/node": "^17.0.40",
+		"dotenv": "^16.0.1",
 		"nodemon": "^2.0.16",
 		"ts-node": "^10.8.1",
 		"typescript": "^4.7.4"
@@ -20,7 +21,10 @@
 		"@fastify/swagger": "^7.4.0",
 		"@fastify/type-provider-typebox": "^1.0.0",
 		"@sinclair/typebox": "^0.23.5",
+		"api": "^4.5.1",
+		"axios": "^0.27.2",
 		"fastify": "^4.1.0",
-		"pino-colada": "^2.2.2"
+		"pino-colada": "^2.2.2",
+		"request": "^2.88.2"
 	}
 }

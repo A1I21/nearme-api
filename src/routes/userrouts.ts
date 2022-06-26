@@ -21,6 +21,9 @@ export default async function (server:FastifyInstance) {
         schema: {
             summary: "create a new user",
             tags: ["user"],
+            response: {
+                "2xx": Type.Union([Users, Type.Null()]),
+            },
             body: Users,
         },
         handler: async (request, reply) => {
