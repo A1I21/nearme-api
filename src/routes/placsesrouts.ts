@@ -1,12 +1,8 @@
 import { Static, Type } from "@sinclair/typebox";
 import { FastifyInstance } from "fastify";
-const request = require('request');
-
 import { placsesCON } from "../controller/placsesCON";
-import { plapla } from "../services/api";
-//import { getPlaces, placesearch } from "../services/placesreach";
-import querystring from "querystring";
-import { type } from "os";
+import got from "got/dist/source";
+import { json } from "stream/consumers";
 
 export const GetPlaceQuerybyanme = Type.Object({
   name: Type.Optional(Type.String()),
@@ -21,7 +17,6 @@ export const myq = Type.Object({
   name: Type.Optional(Type.String()),
 });
 type myq = Static<typeof myq>;
-
 
 type GetPlaceQuerybycc = Static<typeof GetPlaceQuerybycc>;
 
@@ -122,8 +117,6 @@ export default async function (server: FastifyInstance) {
     },
 
     handler: async (request, reply) => {
-     
-    
       // const Nqurey: any = request.query as GetPlaceQuerybyanme;
       // if (Nqurey.name) {
       //   return place.filter((p) => p.name.includes(Nqurey.name ?? ""));
@@ -150,26 +143,37 @@ export default async function (server: FastifyInstance) {
       }
     },
   });
-  //route to run a function 
+  //route search place by qurey name 
   server.route({
     method: "GET",
-    url: "/placeserachbyapppli",
+    url: "/myapi/searchName",
     schema: {
-      summary: "search by canagory and city",
-      tags: ["place"],
+      summary: "snew",
+      tags: ["new"],
       querystring: myq,
     },
     handler: async (request, reply) => {
-      const qurey: any = request.query as myq;
-      return plapla(qurey.name);
+      const response = await got(
+        "https://api.foursquare.com/v3/places/search?query="+myq,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "fsq3sx7F0Uwp8G6We+CzMo05xZK2N3OA6dDbIyJ2GRaKhKY=",
+          },
+        }
+      );
+      const result = JSON.parse(response.body);
+      return result;
+      console.log(result);
+      // console.log(result[0].name);
+      // //maping the name to the array
+      // return result.map((place: { name: string }) => place.name);
 
+ 
+    }
+  }
+  );
 }
-  });
-}
 
-
-
-
-
-
+ 
 
