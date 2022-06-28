@@ -8,15 +8,99 @@ datasource db {
 }
 
 model User {
-    user_id    String     @id @default(auto()) @map("_id") @db.ObjectId
-    email      String
-    // phone      String
-    // name       String
-    // password   String
-    // myfavorite favorite[]
+    user_id        String     @id @default(auto()) @map("_id") @db.ObjectId
+    username       String     @unique
+    password       String
+    email          String
+    phone          String
+    name           String
+    favoriteplaces Favorite[]
 }
 
-type favorite {
-    user_id     String
-    favorite_id String
+model Place {
+    place_id     String        @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    address      String
+    city         String
+    phone        String
+    latitude     Float
+    longitude    Float
+    rating       Rating
+    price        Price
+    openinghours String
+    category     Category[]
+    delevryapps  Delevryapps[]
+
+}
+
+enum Category {
+    Restaurant
+    Cafe
+    Bar
+    FastFood
+    Pub
+    CoffeeShop
+    Bakery
+    IceCreamShop
+    BurguerPlace
+    PizzaPlace
+    PastaPlace
+    WinePlace
+    JuicePlace
+    TeaPlace
+    CupcakePlace
+    CakePlace
+    CandyPlace
+    DessertPlace
+    PancakePlace
+    SandwichPlace
+    SushiPlace
+    RamenPlace
+    SoupPlace
+    BurgerPlace
+    SteakPlace
+    Pizzeria
+    Pizza
+    Pasta
+    Wine
+    Juice
+    Tea
+    Cupcake
+    Cake
+    Candy
+    Dessert
+    Pancake
+    Sandwich
+    Sushi
+    Ramen
+    Soup
+    Burger
+    Steak
+}
+
+enum Price {
+    cheap
+    avrage
+    expensive
+    veryexpensive
+}
+
+enum Rating {
+    one
+    two
+    three
+    four
+    five
+}
+
+enum Delevryapps {
+    Jahez
+    Hungerstation
+}
+
+type Favorite {
+    place_name String
+    city       String
+    category   String
+
 }
