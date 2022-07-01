@@ -8,13 +8,12 @@ datasource db {
 }
 
 model User {
-    user_id        String     @id @default(auto()) @map("_id") @db.ObjectId
-    username       String     @unique
-    password       String
-    email          String
-    phone          String
-    name           String
-    favoriteplaces Favorite[]
+    user_id  String @id @default(auto()) @map("_id") @db.ObjectId
+    username String @unique
+    password String
+    email    String
+    phone    String
+    name     String
 }
 
 model Place {
@@ -23,13 +22,16 @@ model Place {
     address      String
     city         String
     phone        String
-    latitude     Float
-    longitude    Float
+    latitude     Float         @default(0)
+    longitude    Float         @default(0)
     rating       Rating
     price        Price
     openinghours String
+    radius       Float         @default(0)
     category     Category[]
     delevryapps  Delevryapps[]
+    created_at   DateTime      @default(now())
+    usersfavs    String[]
 
 }
 
@@ -86,11 +88,10 @@ enum Price {
 }
 
 enum Rating {
-    one
-    two
-    three
-    four
-    five
+    A
+    B
+    C
+    D
 }
 
 enum Delevryapps {
@@ -98,9 +99,4 @@ enum Delevryapps {
     Hungerstation
 }
 
-type Favorite {
-    place_name String
-    city       String
-    category   String
-
-}
+//model

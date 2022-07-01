@@ -1,0 +1,24 @@
+// place
+place search
+add place
+search for the nearest place 
+////with catagories 
+////with google maps url
+////the best rating 
+//is it open now
+//do you want to make it fav 
+//the delivery apps
+//near specific neighborhood
+// 
+
+
+chalk 
+figmit
+//cli 
+create palce 
+get all place 
+place url 
+search place 
+
+//user 
+create user still jwt 
