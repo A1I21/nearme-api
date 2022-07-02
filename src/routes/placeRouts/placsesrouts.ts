@@ -253,7 +253,7 @@ export default async function (server: FastifyInstance) {
 		},
 	});
 	//trendy places
-	//search by category and the most recent places and most favorite places
+	//search by category and the most recent places and most favorite places //get the time as string
 	server.route({
 		method: 'GET',
 		url: '/trendy',
@@ -268,11 +268,13 @@ export default async function (server: FastifyInstance) {
 			const query: any = request.query as any;
 			const place = await prismaClient.place.findMany({
 				where: {
-					category: query.category,
+					category: {
+						has: query.category,
+					},
 				},
 				orderBy: {
-					created_at: 'desc',
-					usersfavs: 'asc',
+					// 	usersfavs: 'desc',
+					// 	created_at: 'desc',
 				},
 			});
 			return place;

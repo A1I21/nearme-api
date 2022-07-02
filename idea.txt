@@ -11,6 +11,9 @@ search for the nearest place
 //near specific neighborhood
 // 
 
+still get the date as string 
+
+
 
 chalk 
 figmit
