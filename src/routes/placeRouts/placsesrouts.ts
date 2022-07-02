@@ -295,7 +295,9 @@ export default async function (server: FastifyInstance) {
 			const query: any = request.query as any;
 			const place = await prismaClient.place.findMany({
 				where: {
-					category: query.category,
+					category: {
+						has: query.category,
+					},
 				},
 			});
 			return place;

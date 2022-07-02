@@ -11,6 +11,7 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@fastify/sensible": "^5.0.0",
 		"@prisma/client": "^3.15.2",
 		"@types/node": "^17.0.40",
 		"@types/request": "^2.48.8",
@@ -29,6 +30,7 @@
 		"api": "^4.5.1",
 		"axios": "^0.27.2",
 		"bcrypt": "^5.0.1",
+		"bson": "^4.6.4",
 		"bson-objectid": "^2.0.3",
 		"fastify": "^4.1.0",
 		"fuse": "^0.4.0",
@@ -37,6 +39,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"pino-colada": "^2.2.2",
 		"prisma": "^3.15.2",
-		"request": "^2.88.2"
+		"request": "^2.88.2",
+		"sensible": "^1.1.20"
 	}
 }

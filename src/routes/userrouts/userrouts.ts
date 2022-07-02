@@ -4,6 +4,7 @@ import { type } from 'os';
 import { usercreatcont } from '../../controller/createUser';
 import { User } from '@prisma/client';
 import { prismaClient } from '../../prisma';
+import { ObjectId } from 'bson';
 const bcrypt = require('bcrypt');
 var ObjectID = require('bson-objectid');
 
@@ -64,18 +65,21 @@ export default async function (server: FastifyInstance) {
 		},
 	});
 	//
-	//login user and return user token
+	//login user and check if user exists and check if password is correct
 	server.route({
 		method: 'POST',
 		url: '/userlogin',
 		schema: {
 			summary: 'login a user',
 			tags: ['user'],
-			body: User,
+			body: Type.Object({
+				username: Type.String(),
+				password: Type.String(),
+			}),
 		},
 		handler: async (request, reply) => {
 			const body = request.body as any;
-			const user = await prismaClient.user.findMany({
+			const user = await prismaClient.user.findFirst({
 				where: {
 					username: body.username,
 				},
@@ -83,9 +87,9 @@ export default async function (server: FastifyInstance) {
 			if (!user) {
 				return { msg: 'user not found' };
 			}
-			const isMatch = await bcrypt.compare(body.password, user);
-			if (!isMatch) {
-				return { msg: 'password incorrect' };
+			const isValid = await bcrypt.compare(body.password, user.password);
+			if (!isValid) {
+				return { msg: 'password is incorrect' };
 			}
 			return { msg: 'user logged in successfully' };
 		},

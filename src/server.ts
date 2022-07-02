@@ -26,6 +26,20 @@ server.register(fastifySwagger, {
 			title: 'myAPI',
 			version: '1.0.0',
 		},
+		security: [
+			{
+				bearerAuth: [],
+			},
+		],
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT',
+				},
+			},
+		},
 	},
 });
 
