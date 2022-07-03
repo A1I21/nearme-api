@@ -1,9 +1,9 @@
-import { Type, Static } from '@sinclair/typebox';
+import { Static, Type } from '@sinclair/typebox';
 import { ObjectId } from 'bson';
 import { FastifyInstance } from 'fastify';
 
 const LoginBody = Type.Object({
-	username: Type.String(),
+	email: Type.String({ format: 'email' }),
 	password: Type.String(),
 });
 type LoginBody = Static<typeof LoginBody>;
@@ -20,13 +20,13 @@ export default async function (server: FastifyInstance) {
 			body: LoginBody,
 		},
 		handler: async (request, reply) => {
-			const { username, password } = request.body as LoginBody;
+			const { email, password } = request.body as LoginBody;
 			/// check if user and password are correct
 
 			const newToken = new ObjectId().toHexString();
 
 			tokens.push(newToken);
-			tokenUsers[newToken] = username;
+			tokenUsers[newToken] = email;
 
 			return newToken;
 		},

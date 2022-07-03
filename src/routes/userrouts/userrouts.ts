@@ -7,6 +7,8 @@ import { prismaClient } from '../../prisma';
 import { ObjectId } from 'bson';
 const bcrypt = require('bcrypt');
 var ObjectID = require('bson-objectid');
+import jwt, { JwtPayload } from 'jsonwebtoken';
+const mySecret = 'mysecret';
 
 const Place = Type.Object({
 	name: Type.String(),
@@ -90,6 +92,10 @@ export default async function (server: FastifyInstance) {
 			const isValid = await bcrypt.compare(body.password, user.password);
 			if (!isValid) {
 				return { msg: 'password is incorrect' };
+			}
+			if (isValid) {
+				let token = jwt.sign({ _id: user.user_id }, mySecret);
+				return { msg: 'User logged in', token: token };
 			}
 			return user;
 		},
