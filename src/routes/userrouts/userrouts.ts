@@ -91,7 +91,7 @@ export default async function (server: FastifyInstance) {
 			if (!isValid) {
 				return { msg: 'password is incorrect' };
 			}
-			return { msg: 'user logged in successfully' };
+			return user;
 		},
 	});
 }

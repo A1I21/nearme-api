@@ -273,8 +273,8 @@ export default async function (server: FastifyInstance) {
 					},
 				},
 				orderBy: {
-					// 	usersfavs: 'desc',
-					// 	created_at: 'desc',
+					// usersfavs: 'desc',
+					created_at: 'desc',
 				},
 			});
 			return place;
@@ -302,5 +302,19 @@ export default async function (server: FastifyInstance) {
 			});
 			return place;
 		},
+	});
+
+	//add to favs
+	server.route({
+		method: 'POST',
+		url: '/addfav',
+		schema: {
+			summary: 'add to favs',
+			tags: ['place'],
+			body: Type.Object({
+				username: Type.String(),
+			}),
+		},
+		handler: async (request, reply) => {},
 	});
 }
