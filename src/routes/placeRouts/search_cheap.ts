@@ -20,17 +20,14 @@ export default async function (server: FastifyInstance) {
 		},
 		handler: async (request, reply) => {
 			const query: any = request.query as any;
-			const place = await prismaClient.place.findMany({
+			return await prismaClient.place.findMany({
 				where: {
 					category: {
 						has: query.category,
 					},
 				},
-				orderBy: {
-					price: 'asc',
-				},
+				orderBy: { price: 'asc' },
 			});
-			return place;
 		},
 	});
 }
