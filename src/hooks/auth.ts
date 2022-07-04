@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { tokens } from '../routes/login';
 
-function verifyToken(token: string): { flag: boolean; userId: string } {
+export function verifyToken(token: string): { flag: boolean; userId: string } {
 	const mySecret = 'mysecret';
 	let flag = false;
 	let userId = '';
@@ -10,7 +10,7 @@ function verifyToken(token: string): { flag: boolean; userId: string } {
 		if (err) {
 			flag = false;
 		}
-		if ((decoded as { id: string }).id) {
+		if ((decoded as { username: string })?.username) {
 			flag = true;
 		}
 	});
@@ -19,9 +19,9 @@ function verifyToken(token: string): { flag: boolean; userId: string } {
 export function addAuthorization(server: FastifyInstance) {
 	server.addHook('onRequest', async (request, reply) => {
 		if (request.headers.token == undefined) {
-			reply.status(400).send({ msg: "there's no token " });
+			reply.status(400).send({ msg: "there's no token" });
 		}
-		const token = (request.headers as any).authorization;
+		const token = (request.headers as any).token;
 		const { flag, userId } = verifyToken(token);
 		if (flag === false) reply.code(401).send({ msg: 'unauthorized' });
 	});

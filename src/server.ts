@@ -3,6 +3,7 @@ import fastifySwagger from '@fastify/swagger';
 import { ajvTypeBoxPlugin, TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import fastify from 'fastify';
 import { join } from 'path';
+import { addAuthorization } from './hooks/auth';
 
 // Create a fastify instance
 export const server = fastify({
@@ -47,6 +48,7 @@ server.register(fastifySwagger, {
 server.register(fastifyAutoload, {
 	dir: join(__dirname, 'routes'),
 });
+
 const port: any = process.env.PORT ?? process.env.$PORT ?? 3002;
 
 export function listen() {

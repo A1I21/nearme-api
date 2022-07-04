@@ -8,6 +8,7 @@ import { ObjectId } from 'bson';
 const bcrypt = require('bcrypt');
 var ObjectID = require('bson-objectid');
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { addAuthorization } from '../../hooks/auth';
 const mySecret = 'mysecret';
 
 const Place = Type.Object({
@@ -94,10 +95,10 @@ export default async function (server: FastifyInstance) {
 				return { msg: 'password is incorrect' };
 			}
 			if (isValid) {
-				let token = jwt.sign({ _id: user.user_id }, mySecret);
-				return { msg: 'User logged in', token: token };
+				let token = jwt.sign({ username: user.username }, mySecret);
+				return token;
 			}
-			return user;
+			return { msg: 'user' };
 		},
 	});
 }

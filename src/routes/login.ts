@@ -22,9 +22,7 @@ export default async function (server: FastifyInstance) {
 		handler: async (request, reply) => {
 			const { email, password } = request.body as LoginBody;
 			/// check if user and password are correct
-
 			const newToken = new ObjectId().toHexString();
-
 			tokens.push(newToken);
 			tokenUsers[newToken] = email;
 

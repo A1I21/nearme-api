@@ -4,6 +4,7 @@ import { FastifyInstance } from 'fastify';
 import { prismaClient } from '../../prisma';
 import Fuse from 'fuse.js';
 import { Url } from 'url';
+import { addAuthorization, verifyToken } from '../../hooks/auth';
 
 //query for search by name
 export const GetPlaceQuerybyanme = Type.Object({
@@ -51,6 +52,7 @@ const User = Type.Object({
 
 ////
 export default async function (server: FastifyInstance) {
+	addAuthorization(server);
 	//create a new place and return all the places
 	server.route({
 		method: 'POST',
@@ -77,7 +79,11 @@ export default async function (server: FastifyInstance) {
 			summary: 'view all places pr search by name',
 			tags: ['place'],
 			querystring: GetPlaceQuerybyanme,
+			headers: {
+				token: Type.String(),
+			},
 		},
+
 		handler: async (request, reply) => {
 			const query = request.query as GetPlaceQuerybyanme;
 			await prismaClient.place.findMany();
