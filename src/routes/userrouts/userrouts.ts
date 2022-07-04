@@ -1,31 +1,10 @@
 import { Static, Type } from '@sinclair/typebox';
 import { FastifyInstance } from 'fastify';
-import { type } from 'os';
-import { usercreatcont } from '../../controller/createUser';
 import { User } from '@prisma/client';
 import { prismaClient } from '../../prisma';
-import { ObjectId } from 'bson';
-const bcrypt = require('bcrypt');
-var ObjectID = require('bson-objectid');
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { addAuthorization } from '../../hooks/auth';
-const mySecret = 'mysecret';
 
-const Place = Type.Object({
-	name: Type.String(),
-	address: Type.String(),
-	city: Type.String(),
-	phone: Type.String(),
-	latitude: Type.Number(),
-	longitude: Type.Number(),
-	rating: Type.String(),
-	price: Type.String(),
-	openinghours: Type.String(),
-	radius: Type.Number(),
-	category: Type.Array(Type.String()),
-	delevryapps: Type.Array(Type.String()),
-	usersfavs: Type.Array(Type.String()),
-});
+const bcrypt = require('bcrypt');
+const mySecret = 'mysecret';
 const User = Type.Object({
 	user_id: Type.String(),
 	username: Type.String(),
@@ -67,39 +46,4 @@ export default async function (server: FastifyInstance) {
 			return { msg: 'user created successfully' };
 		},
 	});
-	//
-	//login user and check if user exists and check if password is correct
-	server.route({
-		method: 'POST',
-		url: '/userlogin',
-		schema: {
-			summary: 'login a user',
-			tags: ['user'],
-			body: Type.Object({
-				username: Type.String(),
-				password: Type.String(),
-			}),
-		},
-		handler: async (request, reply) => {
-			const body = request.body as any;
-			const user = await prismaClient.user.findFirst({
-				where: {
-					username: body.username,
-				},
-			});
-			if (!user) {
-				return { msg: 'user not found' };
-			}
-			const isValid = await bcrypt.compare(body.password, user.password);
-			if (!isValid) {
-				return { msg: 'password is incorrect' };
-			}
-			if (isValid) {
-				let token = jwt.sign({ username: user.username }, mySecret);
-				return { token, name: user.name };
-			}
-			return { msg: 'user' };
-		},
-	});
 }
-// }

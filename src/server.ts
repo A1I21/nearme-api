@@ -3,8 +3,6 @@ import fastifySwagger from '@fastify/swagger';
 import { ajvTypeBoxPlugin, TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import fastify from 'fastify';
 import { join } from 'path';
-import { addAuthorization } from './hooks/auth';
-
 // Create a fastify instance
 export const server = fastify({
 	logger: true,
@@ -16,7 +14,6 @@ export const server = fastify({
 		plugins: [ajvTypeBoxPlugin],
 	},
 }).withTypeProvider<TypeBoxTypeProvider>();
-
 //the swagger plugin
 server.register(fastifySwagger, {
 	routePrefix: '/docs',
@@ -27,11 +24,7 @@ server.register(fastifySwagger, {
 			title: 'myAPI',
 			version: '1.0.0',
 		},
-		security: [
-			{
-				bearerAuth: [],
-			},
-		],
+		security: [{ bearerAuth: [] }],
 		components: {
 			securitySchemes: {
 				bearerAuth: {
@@ -43,14 +36,11 @@ server.register(fastifySwagger, {
 		},
 	},
 });
-
 //auto load all the routes
 server.register(fastifyAutoload, {
 	dir: join(__dirname, 'routes'),
 });
-
 const port: any = process.env.PORT ?? process.env.$PORT ?? 3002;
-
 export function listen() {
 	server
 		.listen({

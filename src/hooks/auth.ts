@@ -1,6 +1,5 @@
 import { FastifyInstance } from 'fastify';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { tokens } from '../routes/login';
 
 export function verifyToken(token: string): { flag: boolean; userId: string } {
 	const mySecret = 'mysecret';
