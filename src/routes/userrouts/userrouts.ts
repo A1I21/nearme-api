@@ -96,7 +96,7 @@ export default async function (server: FastifyInstance) {
 			}
 			if (isValid) {
 				let token = jwt.sign({ username: user.username }, mySecret);
-				return token;
+				return { token, name: user.name };
 			}
 			return { msg: 'user' };
 		},
