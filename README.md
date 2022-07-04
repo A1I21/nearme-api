@@ -16,6 +16,6 @@
 5. DB: `mongo`
 
 ##
-https://nearme--api.herokuapp.com/
-a1i.live/docs
+1. https://nearme--api.herokuapp.com/
+2. https://a1i.live/docs
 
